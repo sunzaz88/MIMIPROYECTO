@@ -1,0 +1,278 @@
+ <!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pedido de comida</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#e9e9e9;
+}
+
+.pagina{
+display:flex;
+height:100vh;
+}
+
+.menu{
+width:50%;
+background:#ac9668;
+padding:40px;
+text-align:center;
+}
+
+.titulo{
+font-family:"Brush Script MT",cursive;
+font-size:60px;
+color:#7b2c2c;
+}
+
+.descripcion{
+color:white;
+margin-bottom:20px;
+}
+
+.fotoPrincipal{
+width:100%;
+border-radius:5px;
+transition:transform 0.3s;
+}
+
+.fotoPrincipal:hover{
+transform:scale(1.05);
+}
+
+.presentacion{
+margin-top:25px;
+font-size:16px;
+color:#291d02;
+line-height:1.6;
+max-width:650px;
+margin:auto;
+font-family:'Playfair Display', serif;
+}
+
+.pedido{
+width:50%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+background:#f5e4cc;
+}
+
+.tituloPedido{
+font-family:"Brush Script MT",cursive;
+font-size:80px;
+color:#7b2c2c;
+margin-bottom:10px;
+}
+
+.menuPlatillos{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.platillo{
+text-align:center;
+}
+
+.platillo img{
+width:110px;
+height:110px;
+object-fit:cover;
+border-radius:4px;
+transition:transform 0.3s;
+}
+
+.platillo img:hover{
+transform:scale(1.1);
+}
+
+.platillo p{
+font-family:cursive;
+font-size:18px;
+margin-top:5px;
+}
+
+form{
+border:1px solid #ccc;
+padding:20px;
+border-radius:5px;
+width:400px;
+background:white;
+}
+
+label{
+font-weight:bold;
+color:#7b2c2c;
+}
+
+input,select{
+width:100%;
+margin-bottom:10px;
+border-radius:5px;
+padding:5px;
+}
+
+.precio{
+text-align:center;
+font-weight:bold;
+color:#7b2c2c;
+margin-bottom:10px;
+}
+
+button{
+background:#ddd;
+padding:8px;
+border:none;
+cursor:pointer;
+}
+
+button:hover{
+background:#b22;
+color:white;
+}
+
+.mensaje{
+text-align:center;
+color:blue;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="pagina">
+
+<div class="menu">
+
+<h1 class="titulo">ChiSquete</h1>
+
+<p class="descripcion">Italian Food</p>
+
+<img src="OIP (23).webp" class="fotoPrincipal">
+
+<p class="presentacion">
+En ChiSquete preparamos auténtica comida italiana con ingredientes frescos y recetas tradicionales. 
+Disfruta de nuestras deliciosas pastas como Alfredo, Pesto y Lasaña, preparadas al momento para ofrecerte el mejor sabor.
+</p>
+
+</div>
+
+<div class="pedido">
+
+<h2 class="tituloPedido">Realiza tu pedido</h2>
+
+<div class="menuPlatillos">
+
+<div class="platillo">
+<img src="Pasta-alfredo-con-camarones-1000x563.jpg">
+<p>Alfredo</p>
+</div>
+
+<div class="platillo">
+<img src="Basil-Pesto-Thumbnail.jpg">
+<p>Pesto</p>
+</div>
+
+<div class="platillo">
+<img src="receta-de-lasana.jpg">
+<p>Lasaña</p>
+</div>
+
+</div>
+
+<form id="miFormulario">
+
+<label>Selecciona tu pasta</label>
+
+<select id="comida">
+
+<option>Pasta Alfredo</option>
+<option>Pasta Pesto</option>
+<option>Lasaña</option>
+
+</select>
+
+<p class="precio" id="precio">
+Precio: $185
+</p>
+
+<label>Nombre</label>
+<input type="text" id="nombres" required>
+
+<label>Dirección</label>
+<input type="text" id="direccion" required>
+
+<label>Teléfono</label>
+<input type="tel" id="telefono" required>
+
+<button type="submit">Enviar Pedido</button>
+
+<p class="mensaje" id="mensaje"></p>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+const url="https://script.google.com/macros/s/AKfycbzrjWH_iuERW1OeaeXduWRkTqxJ6xgvyGpdQmlUHlhXJuSgc5SIH9uOBRGhSai10Kw/exec";
+
+const precios={
+"Pasta Alfredo":185,
+"Pasta Pesto":190,
+"Lasaña":200
+};
+
+const comida=document.getElementById("comida");
+const precio=document.getElementById("precio");
+
+comida.addEventListener("change",function(){
+precio.innerHTML="Precio: $"+precios[this.value];
+});
+
+document.getElementById("miFormulario").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const datos={
+comida:comida.value,
+nombres:document.getElementById("nombres").value,
+direccion:document.getElementById("direccion").value,
+telefono:document.getElementById("telefono").value
+};
+
+fetch(url,{
+method:"POST",
+body:JSON.stringify(datos)
+})
+.then(res=>res.json())
+.then(()=>{
+document.getElementById("mensaje").innerHTML="Pedido guardado correctamente ✔";
+this.reset();
+})
+.catch(()=>{
+document.getElementById("mensaje").innerHTML="Error al guardar ❌";
+});
+
+});
+
+</script>
+
+</body>
+
+</html> 
